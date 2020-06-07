@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//www.google.com/jsapi"></script><script>window.parent.maeExportApis_();</script>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <script>
+      
+      function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+      }
+      window.addEventListener('load', preventFormSubmit);
+
+      function handleFormSubmit(formObject) {
+        google.script.run.withSuccessHandler(closeModal).saveCredentials(formObject);
+      }
+      
+      function closeModal() {
+        google.script.host.close();
+      }
+      
+      function loadMWSConfig(config){
+        var configData = JSON.parse(config);
+        $("#sellerID").val(configData.sellerID);
+        $("#accessKey").val(configData.accessKey);
+        $("#secretKey").val(configData.secretKey);
+        $("#authToken").val(configData.authToken);
+        $("#defaultMarket").val(configData.defaultMarket);
+      }
+      
+    google.script.run.withSuccessHandler(loadMWSConfig).loadCredentials();
+    </script>
+  </head>
+  <body onload="loadMWSConfig()">
+    <form id="credentials" onsubmit="handleFormSubmit(this)">
+      <div class="form-group">
+        <label for="sellerID">Seller ID</label>
+        <input type="text" name="sellerID" id="sellerID" value="" style="width: 100%;">
+      </div><br>
+      <div class="form-group">
+        <label for="authToken">Access Key</label>
+        <input type="text" name="accessKey" id="accessKey" value="" style="width: 100%;">
+      </div><br>
+      <div class="form-group">
+        <label for="authToken">Secret Key</label>
+        <input type="text" name="secretKey" id="secretKey" value="" style="width: 100%;">
+      </div><br>
+      <div class="form-group">
+        <label for="authToken">MWS Auth Token</label>
+        <input type="text" name="authToken" id="authToken" value="" style="width: 100%;">
+      </div><br>
+      <div class="form-group">
+        <label for="defaultMarket">Default Marketplace</label>
+        <select name="defaultMarket" id="defaultMarket" style="width: 100%;">
+          <option value="ATVPDKIKX0DER">United States</option>
+          <option value="A39IBJ37TRP1C6">Australia</option>
+          <option value="A2Q3Y263D00KWC">Brazil</option>
+          <option value="A2EUQ1WTGCTBG2">Canada</option>
+          <option value="A13V1IB3VIYZZH">France</option>
+          <option value="A1PA6795UKMFR9">Germany</option>
+          <option value="A21TJRUUN4KGV">India</option>
+          <option value="APJ6JRA9NG5V4">Italy</option>
+          <option value="A1VC38T7YXB528">Japan</option>
+          <option value="A1AM78C64UM0Y8">Mexico</option>
+          <option value="A19VAU5U5O7RUS">Singapore</option>
+          <option value="A1RKKUPIHCS9HS">Spain</option>
+          <option value="A33AVAJ2PDY3EV">Turkey</option>
+          <option value="A2VIGQ35RCS4UG">United Arab Emirates</option>
+          <option value="A1F83G8C2ARO7P">United Kingdom</option>
+        </select>
+      </div><br>
+      <button class="share">Save</button>
+      <input type="button" value="Close" onclick="closeModal()">
+    </form>
+</body>
+</html>
